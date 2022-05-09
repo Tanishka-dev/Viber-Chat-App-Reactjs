@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
+import React from "react";
 import { db } from "../index";
 import GroupCard from "./GroupCard";
 
 const LeftBar = ({ groups }) => {
+   const addGroup = () => {
+      const groupName = prompt("Enter group name...");
+
+      if (groupName) {
+         addDoc(collection(db, "groups"), {
+            name: groupName,
+         });
+      }
+   };
+
    return (
       <div className=" w-1/4 mx-1 my-5 border-r-2 p-2 border-gray-900 items-center ">
          <div className="flex flex-row justify-between gap-4  items-center  ">
@@ -33,6 +43,7 @@ const LeftBar = ({ groups }) => {
                   </svg>
                </div>
                <svg
+                  onClick={() => addGroup()}
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-indigo-700 hover:animate-bounce"
                   fill="none"

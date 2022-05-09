@@ -5,6 +5,9 @@ import App from "./App";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { GoogleAuthProvider, getAuth } from "firebase/auth";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { store } from "./app/store";
 const firebaseConfig = {
    apiKey: "AIzaSyCrPKc3GJEoIBfBUlOailgbMmq9Of86618",
    authDomain: "msg-app-beb38.firebaseapp.com",
@@ -24,6 +27,10 @@ export const auth = getAuth();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
    <React.StrictMode>
-      <App />
+      <Provider store={store}>
+         <BrowserRouter>
+            <App />
+         </BrowserRouter>
+      </Provider>
    </React.StrictMode>
 );

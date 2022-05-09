@@ -1,15 +1,46 @@
-import React from "react";
+import { collection, doc, onSnapshot, orderBy } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Message from "../components/Message";
+import { db } from "../index";
 
 const Chat = () => {
    const { roomId } = useParams();
+   const [groupDetails, setGroupDetails] = useState([]);
+   const [roomMessages, setRoomMessages] = useState([]);
+
+   useEffect(() => {
+      if (roomId) {
+         onSnapshot(doc(db, "groups", roomId), (doc) => {
+            setGroupDetails(doc.data());
+         });
+      }
+      onSnapshot(
+         collection(db, "groups", roomId, "messages"),
+         orderBy("timestamp", "asc"),
+         (doc) => {
+            setRoomMessages(doc.docs.map((doc) => doc.data()));
+         }
+      );
+   }, [roomId]);
+
    return (
-      <div className="flex flex-col justify-end fixed top-16  left-1/4 w-2/4   border-r-2 p-2 border-gray-900 text-white">
+      <div className="flex flex-col  justify-end w-2/4 border-r-2 p-2 border-gray-900 text-white">
          <div>
-            <h1 className=" m-5 text-3xl ">Room name</h1>
-            <div className=" m-5 text-xl">messaging</div>
+            <h1 className=" m-5 flex text-3xl ">{groupDetails?.name}</h1>
+            <div className=" m-5 ">
+               {roomMessages.map((msg) => (
+                  <Message
+                     key={msg.message}
+                     timestamp={msg.timestamp}
+                     message={msg.message}
+                     userImage={msg.userImage}
+                     user={msg.user}
+                  />
+               ))}
+            </div>
          </div>
-         <div className="flex flex-row gap-4 m-5 items-center py-80  ">
+         <div className="flex flex-row gap-4 items-center ">
             <svg
                xmlns="http://www.w3.org/2000/svg"
                className="h-5 w-5 text-slate-500"
@@ -32,15 +63,15 @@ const Chat = () => {
 
             <svg
                xmlns="http://www.w3.org/2000/svg"
-               class="h-9 w-9 fill-indigo-700 text-slate-900 "
+               className="h-9 w-9 fill-indigo-700 text-slate-900 "
                fill="none"
                viewBox="0 0 24 24"
                stroke="currentColor"
-               stroke-width="2"
+               strokeWidth="2"
             >
                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
                />
             </svg>

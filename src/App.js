@@ -6,26 +6,21 @@ import LeftBar from "./components/LeftBar";
 import React, { useEffect, useState } from "react";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "./index";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import Home from "./pages/Home";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-   const [groups, setGroups] = useState([]);
-   useEffect(() => {
-      const q = query(collection(db, "groups"));
-      const unsub = onSnapshot(q, (doc) => {
-         setGroups(
-            doc.docs.map((doc) => ({ id: doc.id, name: doc.data().name }))
-         );
-      });
-      return () => unsub;
-   }, []);
    return (
-      <BrowserRouter>
-         <Header />
-         <LeftBar groups={groups} />
-         <Routes>
-            <Route path="/room/:roomId" element={<Chat />} />
-         </Routes>
-      </BrowserRouter>
+      <Routes>
+         <Route
+            path="/room/:roomId"
+            element={<PrivateRoute Component={<Home />} />}
+         />
+         <Route path="/register" element={<RegisterPage />} />
+         <Route path="/" element={<LoginPage />} />
+      </Routes>
    );
 }
 

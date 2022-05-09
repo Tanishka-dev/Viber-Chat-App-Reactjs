@@ -1,7 +1,7 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 
-export const Header = () => {
+const Header = () => {
    return (
       <div className="flex flex-row justify-between p-2 m-2  shadow-md sticky px-10 py-2 border-b-2 border-gray-900">
          <div className="flex flex-row items-center ml-5 gap-6 ">
@@ -53,3 +53,5 @@ export const Header = () => {
       </div>
    );
 };
+
+export default Header;
