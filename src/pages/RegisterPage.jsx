@@ -40,7 +40,7 @@ export default function RegisterPage() {
                   // An error occurred
                   // ...
                });
-            navigation("/login");
+            navigation("/");
          })
          .catch((error) => {
             const errorCode = error.code;

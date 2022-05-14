@@ -4,23 +4,31 @@ import { db } from "../index";
 import Chat from "./Chat";
 import LeftBar from "../components/LeftBar";
 import Header from "../components/Header";
+import { useUserData } from "../features/User/userSlice";
 
 const Home = () => {
-   const [groups, setGroups] = useState([]);
+   const [users, setUsers] = useState([]);
+   const user = useUserData();
    useEffect(() => {
-      const q = query(collection(db, "groups"));
+      const q = query(collection(db, "users"));
+
       const unsub = onSnapshot(q, (doc) => {
-         setGroups(
-            doc.docs.map((doc) => ({ id: doc.id, name: doc.data().name }))
+         setUsers(
+            doc.docs.map((doc) => ({
+               id: doc.id,
+               name: doc.data().name,
+               photoURL: doc.data().photoURL,
+            }))
          );
       });
+
       return () => unsub;
    }, []);
    return (
       <>
          <Header />
-         <div className="flex flex-row">
-            <LeftBar groups={groups} />
+         <div className="flex flex-row ">
+            <LeftBar users={users} />
             <Chat />
          </div>
       </>

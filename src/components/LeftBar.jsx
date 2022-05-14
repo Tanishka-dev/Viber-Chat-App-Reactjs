@@ -2,20 +2,13 @@ import { addDoc, collection } from "firebase/firestore";
 import React from "react";
 import { db } from "../index";
 import GroupCard from "./GroupCard";
+import { useUserData } from "../features/User/userSlice";
 
-const LeftBar = ({ groups }) => {
-   const addGroup = () => {
-      const groupName = prompt("Enter group name...");
-
-      if (groupName) {
-         addDoc(collection(db, "groups"), {
-            name: groupName,
-         });
-      }
-   };
+const LeftBar = ({ users }) => {
+   const user = useUserData();
 
    return (
-      <div className=" w-1/4 mx-1 my-5 border-r-2 p-2 border-gray-900 items-center ">
+      <div className=" w-1/3 ml-28  border-r-2 p-2 border-l-2 border-gray-900 items-center ">
          <div className="flex flex-row justify-between gap-4  items-center  ">
             <h4 className="text-opacity-50 text-white ">Chat</h4>
 
@@ -42,26 +35,17 @@ const LeftBar = ({ groups }) => {
                      />
                   </svg>
                </div>
-               <svg
-                  onClick={() => addGroup()}
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-indigo-700 hover:animate-bounce"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-               >
-                  <path
-                     strokeLinecap="round"
-                     strokeLinejoin="round"
-                     d="M12 4v16m8-8H4"
-                  />
-               </svg>
             </div>
          </div>
+
          <div className="mt-20">
-            {groups?.map((group) => (
-               <GroupCard name={group.name} id={group.id} key={group.id} />
+            {users?.map((user) => (
+               <GroupCard
+                  name={user.name}
+                  id={user.id}
+                  key={user.id}
+                  photoURL={user.photoURL}
+               />
             ))}
          </div>
       </div>

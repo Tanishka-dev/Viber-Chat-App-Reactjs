@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-const GroupCard = ({ name, id }) => {
+import { useUserData } from "../features/User/userSlice";
+const GroupCard = ({ name, id, photoURL }) => {
+   console.log(name);
    const navigate = useNavigate();
-
+   const user = useUserData();
    const selectGroup = () => {
       if (id) {
          navigate(`/room/${id}`);
@@ -17,7 +19,20 @@ const GroupCard = ({ name, id }) => {
        transform 
       hover:-translate-y-1 hover:scale-105  "
       >
-         <img className=" m-5 h-14 w-14 rounded-xl" src="/me.jpg" alt="" />
+         {photoURL ? (
+            <img className="h-12 w-12 rounded-lg m-3" src={photoURL}></img>
+         ) : (
+            <p
+               style={{
+                  backgroundColor: `#${Math.floor(
+                     Math.random() * 16777215
+                  ).toString(16)}`,
+               }}
+               className="text-white m-3 rounded-lg h-12 w-12  items-center text-xl font-bold flex justify-center"
+            >
+               {name}
+            </p>
+         )}
          <div className="flex flex-col justify-center ">
             <h4 className="text-slate-300">{name}</h4>
             <h5 className="text-opacity-50 text-white">Last msg</h5>

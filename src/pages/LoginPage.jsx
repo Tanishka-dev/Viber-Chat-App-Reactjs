@@ -9,7 +9,7 @@ import {
    GoogleAuthProvider,
 } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
-import { doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db, provider } from "../index";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../features/User/userSlice";
@@ -27,12 +27,13 @@ export default function LoginPage() {
          .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user);
+
             setDoc(
                doc(db, "users", user.uid),
                {
                   name: user.displayName,
                   email: user.email,
+                  photoURL: user.photoURL ?? "",
                },
                { merge: true }
             );
@@ -60,7 +61,13 @@ export default function LoginPage() {
             const user = result.user;
             dispatch(setLogin(user));
             navigation("/room/:roomId");
-            // ...
+            addDoc(collection(db, "users"), {
+               name: user.displayName,
+               email: user.email,
+               photoURL: user.photoURL ?? "",
+            })
+               .then((data) => console.log(data))
+               .catch((err) => console.log(err));
          })
          .catch((error) => {
             // Handle Errors here.

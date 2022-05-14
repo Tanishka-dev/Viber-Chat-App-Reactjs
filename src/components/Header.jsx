@@ -1,7 +1,8 @@
 import { Avatar } from "@mui/material";
 import React from "react";
-
+import { useUserData } from "../features/User/userSlice";
 const Header = () => {
+   const user = useUserData();
    return (
       <div className="flex flex-row justify-between p-2 m-2  shadow-md sticky px-10 py-2 border-b-2 border-gray-900">
          <div className="flex flex-row items-center ml-5 gap-6 ">
@@ -45,7 +46,7 @@ const Header = () => {
                </svg>
             </div>
 
-            <Avatar alt="" src="" />
+            <Avatar alt="" src={user.user.photoURL} />
             <button className="bg-slate-900 text-white px-3 rounded-md hover:bg-gray-400 hover:animate-bounce">
                Logout
             </button>
