@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "../features/User/userSlice";
 const GroupCard = ({ name, id, photoURL }) => {
-   console.log(name);
    const navigate = useNavigate();
    const user = useUserData();
+   const color = useRef(Math.floor(Math.random() * 16777215).toString(16));
    const selectGroup = () => {
       if (id) {
          navigate(`/room/${id}`);
@@ -20,17 +20,15 @@ const GroupCard = ({ name, id, photoURL }) => {
       hover:-translate-y-1 hover:scale-105  "
       >
          {photoURL ? (
-            <img className="h-12 w-12 rounded-lg m-3" src={photoURL}></img>
+            <img className="h-12 w-12 rounded-lg m-3" src={photoURL} />
          ) : (
             <p
                style={{
-                  backgroundColor: `#${Math.floor(
-                     Math.random() * 16777215
-                  ).toString(16)}`,
+                  backgroundColor: `#${color.current}`,
                }}
                className="text-white m-3 rounded-lg h-12 w-12  items-center text-xl font-bold flex justify-center"
             >
-               {name}
+               {name?.slice(0, 1)}
             </p>
          )}
          <div className="flex flex-col justify-center ">

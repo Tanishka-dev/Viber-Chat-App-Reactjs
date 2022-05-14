@@ -61,13 +61,6 @@ export default function LoginPage() {
             const user = result.user;
             dispatch(setLogin(user));
             navigation("/room/:roomId");
-            addDoc(collection(db, "users"), {
-               name: user.displayName,
-               email: user.email,
-               photoURL: user.photoURL ?? "",
-            })
-               .then((data) => console.log(data))
-               .catch((err) => console.log(err));
          })
          .catch((error) => {
             // Handle Errors here.

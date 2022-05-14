@@ -1,8 +1,9 @@
 import { Avatar } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 import { useUserData } from "../features/User/userSlice";
 const Header = () => {
    const user = useUserData();
+   const color = useRef(Math.floor(Math.random() * 16777215).toString(16));
    return (
       <div className="flex flex-row justify-between p-2 m-2  shadow-md sticky px-10 py-2 border-b-2 border-gray-900">
          <div className="flex flex-row items-center ml-5 gap-6 ">
@@ -20,7 +21,7 @@ const Header = () => {
                   d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                />
             </svg>
-            <h2 className="text-white">Messaging</h2>
+            <h2 className="text-white">Viber</h2>
          </div>
 
          <div className="flex flex-row gap-8 ">
@@ -46,7 +47,13 @@ const Header = () => {
                </svg>
             </div>
 
-            <Avatar alt="" src={user.user.photoURL} />
+            {user.user.photoURL ? (
+               <Avatar alt="" src={user.user.photoURL} />
+            ) : (
+               <Avatar sx={{ bgcolor: `#${color.current}` }}>
+                  {user.user.displayName.slice(0, 1)}
+               </Avatar>
+            )}
             <button className="bg-slate-900 text-white px-3 rounded-md hover:bg-gray-400 hover:animate-bounce">
                Logout
             </button>

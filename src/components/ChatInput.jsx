@@ -2,25 +2,32 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../index";
 import { useUserData } from "../features/User/userSlice";
-const ChatInput = ({ groupName, groupId }) => {
+const ChatInput = ({ groupId }) => {
    const [input, setInput] = useState("");
    const user = useUserData();
 
    const sendMessage = (e) => {
       e.preventDefault();
+      if (!input) {
+         return;
+      }
 
       if (groupId) {
          addDoc(collection(db, "users", groupId, "messages"), {
             message: input,
             user: user.user.displayName,
             timestamp: serverTimestamp(),
+            photoURL: user.user.photoURL,
          });
 
          setInput("");
       }
    };
    return (
-      <>
+      <form
+         className="flex justify-between w-full items-center gap-2"
+         onSubmit={sendMessage}
+      >
          <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 text-slate-500"
@@ -38,27 +45,29 @@ const ChatInput = ({ groupName, groupId }) => {
                type="text"
                placeholder="Message"
                value={input}
+               required
                onChange={(e) => setInput(e.target.value)}
                className="bg-transparent outline-none text-white w-full "
             />
          </div>
 
-         <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-9 w-9 fill-indigo-700 text-slate-900 "
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-            onClick={(e) => sendMessage(e)}
-         >
-            <path
-               strokeLinecap="round"
-               strokeLinejoin="round"
-               d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-         </svg>
-      </>
+         <button type="submit">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               className="h-9 w-9 fill-indigo-700 text-slate-900 "
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor"
+               strokeWidth="2"
+            >
+               <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
+               />
+            </svg>
+         </button>
+      </form>
    );
 };
 

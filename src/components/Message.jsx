@@ -1,52 +1,45 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useUserData } from "../features/User/userSlice";
-const Message = ({ message, client, userImage, timestamp }) => {
+const Message = ({ message, user: userName, photoURL, timestamp }) => {
    const user = useUserData();
+   const color = useRef(Math.floor(Math.random() * 16777215).toString(16));
 
    return (
       <>
-         {user.user.displayName === client ? (
-            <div className="flex flex-row justify-end text-sm my-3 ">
-               <img
-                  className="h-10 w-10 rounded-2xl"
-                  src={userImage}
-                  alt="user"
-               />
-               <div className="flex flex-col bg-slate-800 ml-2   px-1  p-2 rounded-2xl ">
-                  <h4
-                     style={{
-                        color: `#${Math.floor(
-                           Math.random() * 16777215
-                        ).toString(16)}`,
-                     }}
-                     className="mx-2 "
-                  >
-                     {client}
-                  </h4>
-
+         {user.user.displayName === userName ? (
+            <div className="flex flex-row items-center justify-end text-sm my-3 gap-2">
+               <div className="flex flex-col bg-slate-800 px-1  p-2 rounded-2xl ">
                   <p className="text-gray-400 mx-2 ">{message}</p>
                   <h6 className="text-gray-600 "></h6>
                </div>
+               {photoURL ? (
+                  <img className="h-8 w-8 rounded-full" src={photoURL} />
+               ) : (
+                  <p
+                     style={{
+                        backgroundColor: `#${color.current}`,
+                     }}
+                     className="text-white rounded-full h-8 w-8 items-center text-base font-bold flex justify-center"
+                  >
+                     {userName?.slice(0, 1)}
+                  </p>
+               )}
             </div>
          ) : (
             <div className="flex flex-row text-sm my-3  ">
-               <img
-                  className="h-10 w-10 rounded-2xl"
-                  src={userImage}
-                  alt="user"
-               />
-               <div className="flex flex-col bg-slate-800 ml-2  px-1  p-2 rounded-2xl ">
-                  <h4
+               {photoURL ? (
+                  <img className="h-8 w-8 rounded-full" src={photoURL} />
+               ) : (
+                  <p
                      style={{
-                        color: `#${Math.floor(
-                           Math.random() * 16777215
-                        ).toString(16)}`,
+                        backgroundColor: `#${color.current}`,
                      }}
-                     className="mx-2 "
+                     className="text-white rounded-full h-8 w-8 items-center text-base font-bold flex justify-center"
                   >
-                     {client}
-                  </h4>
-
+                     {userName?.slice(0, 1)}
+                  </p>
+               )}
+               <div className="flex flex-col bg-slate-800 ml-2  px-1  p-2 rounded-2xl ">
                   <p className="text-gray-400 mx-2 ">{message}</p>
                </div>
             </div>

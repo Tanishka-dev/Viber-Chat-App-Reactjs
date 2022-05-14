@@ -6,7 +6,6 @@ import { useUserData } from "../features/User/userSlice";
 
 const LeftBar = ({ users }) => {
    const user = useUserData();
-
    return (
       <div className=" w-1/3 ml-28  border-r-2 p-2 border-l-2 border-gray-900 items-center ">
          <div className="flex flex-row justify-between gap-4  items-center  ">
@@ -39,14 +38,16 @@ const LeftBar = ({ users }) => {
          </div>
 
          <div className="mt-20">
-            {users?.map((user) => (
-               <GroupCard
-                  name={user.name}
-                  id={user.id}
-                  key={user.id}
-                  photoURL={user.photoURL}
-               />
-            ))}
+            {users
+               ?.filter((item) => item.name !== user.user.displayName)
+               .map((user) => (
+                  <GroupCard
+                     name={user.name}
+                     id={user.id}
+                     key={user.id}
+                     photoURL={user.photoURL}
+                  />
+               ))}
          </div>
       </div>
    );
